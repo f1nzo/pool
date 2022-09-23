@@ -4,7 +4,5 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-turtle = "1.0.0-rc.3"
-
-[profile.dev.package."*"]
-opt-level = 3
+color = "0.0.1"
+draw = "0.3.0"

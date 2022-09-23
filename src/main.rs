@@ -1,4 +1,4 @@
-use turtle::Turtle;
+use draw::*;
 
 fn main() {
     let table = Table::new();
@@ -99,40 +99,46 @@ impl Table {
             y: self.height,
         };
 
+        if draw {
+
+            let board_height: u32 = (self.height * 10.0) as u32;
+            let board_width: u32 = (self.width * 10.0) as u32;
+
+            let canvas_board_offset = 100;
+
+            let canvas_height: u32 = board_height + canvas_board_offset * 2;
+            let canvas_width: u32 = board_width + canvas_board_offset * 2;
+
+            let mut canvas = Canvas::new(canvas_height, canvas_width);
+
+            // draw board
+            let mut board = Drawing::new()
+                .with_shape(Shape::Rectangle {
+                    height: board_height,
+                    width: board_width,
+                })
+                .with_xy(100.0, 100.0)
+                .with_style(Style::filled(Color::rgb(0, 0, 0)));
+
+            canvas.display_list.add(board);
+
+            render::save(
+                &canvas,
+                "hits/svg/hit.svg",
+                SvgRenderer::new(),
+            )
+            .expect("Failed to save");
+
+            
+            
+        }
+
         println!("height1: {h}");
         println!("width1: {w}");
         println!("angle: {angle}");
         println!("ratio: {ratio}");
         println!("height2: {h2}");
         println!("width2: {w2}");
-
-        if draw {
-            let mut turtle = Turtle::new();
-            // use turtle to draw the table
-            turtle.set_speed("instant");
-            turtle.set_pen_size(2.0);
-            turtle.set_pen_color("black");
-            turtle.set_fill_color("black");
-            turtle.pen_up();
-            turtle.go_to([start.x, start.y]);
-            turtle.pen_down();
-            turtle.go_to([target.x, target.y]);
-            turtle.pen_up();
-            turtle.go_to([end.x, end.y]);
-            turtle.pen_down();
-            turtle.go_to([goal_start.x, goal_start.y]);
-            turtle.go_to([goal_end.x, goal_end.y]);
-            turtle.go_to([end.x, end.y]);
-            turtle.pen_up();
-            turtle.set_pen_size(1.0);
-            turtle.set_pen_color("red");
-            turtle.set_fill_color("red");
-            turtle.set_pen_size(2.0);
-            turtle.set_pen_color("black");
-            turtle.set_fill_color("black");
-            turtle.go_to([0.0, 0.0]);
-            turtle.pen_down();
-        }
 
         if end.x > goal_start.x && end.x < goal_end.x {
             return true;
